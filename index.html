@@ -1,0 +1,644 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <title>Escenario</title>
+</head>
+
+<style>
+          body {
+              margin: 0;
+              overflow: hidden;
+          }
+          #boton {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 40px;
+            cursor: pointer;
+          }
+          #activ {
+            color: rgba(0, 174, 255, 0.87);
+          }
+     </style>
+
+    <body>
+  <!--Boton para activar el pointerlock-->
+  <div id="boton">
+    Para comenzar da clic en + para activar <p id="activ">( + )</p>Mira al rededor usando el mouse, pulsa Esc para parar
+  </div>
+
+
+<canvas id="myCanvas">
+    <!--El elemento HTML canvas se puede utilizar para dibujar gráficos a través de 
+        secuencias de comandos (por lo general JavaScript ).-->
+</canvas>
+
+<!-- Aquí va todo el código de three.js -->
+<!-- script type="importmap" importa las librerías necesarias para three.js-->
+<script type="importmap">
+    {
+      "imports": {
+        "three": "./js/three.module.js",
+        "three/PointerLockControls": "./js/PointerLockControls.js",
+        "three/interactive": "./js/three.interactive.js"
+      }
+    }
+  </script>
+
+<script type="module"> 
+//🗃️🗃️ Mandar llamar a la librería
+    import * as THREE from 'three'; 
+     import { InteractionManager } from 'three/interactive';
+        import { TWEEN } from './js/tween.module.min.js'; 
+        import { PointerLockControls } from 'three/PointerLockControls'; 
+        //objetos js
+
+       import obj01 from './Objetos/navidad.js';
+       import obj02 from './Objetos/hallo.js';
+       import obj03 from './Objetos/pascua.js';
+       import obj04 from './Objetos/Entrada.js';
+       import obj05 from './Objetos/ARBOL.js';
+       import obj06 from './Objetos/SnowMan.js';
+       import obj07 from './Objetos/PUERTA 1.js';
+       import obj08 from './Objetos/ESFERA.js';
+       import obj09 from './Objetos/CASA 1.js';
+
+
+//🕹️🕹️ Renderer - Realiza una conexión entre el código y el canvas
+    var renderer = new THREE.WebGLRenderer({
+    canvas: document.getElementById('myCanvas'), antialias: true,
+    });
+    renderer.setPixelRatio(window.decivePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x70707C);
+
+
+// 🎬 Creando nueva escena - Es el espacio donde se colocan los objetos
+    var scene = new THREE.Scene();
+
+//🎥🎥 Agregar una cámara de perspectiva
+    var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, .1, 1000);
+  
+
+    //Settings de la cámara
+     camera.position.set(60, 25, 10);
+        var controls = new PointerLockControls( camera, renderer.domElement );
+        document.getElementById('activ').onclick= function() {
+          controls.lock();
+        }
+        controls.addEventListener( 'lock', function () {
+          boton.style.display = 'none';
+        });
+        controls.addEventListener( 'unlock', function () {
+          boton.style.display = '';
+        });
+
+        // Añadir interactionManager 
+        var interactionManager = new InteractionManager(
+          renderer,
+          camera,
+          renderer.domElement
+        ); 
+        var scene =new THREE.Scene(); 
+
+    // luz
+    var light= new THREE.AmbientLight(0xEEEEEE,0.8);
+    light.position.set(50,50,50);
+    scene.add(light);
+
+// Espacio para colocar los objetos
+//fondo
+  
+     var loader = new THREE.TextureLoader();
+    var bgTexture = loader.load('./image/estrellas.jpg');
+    scene.background = bgTexture; 
+     //Plano
+    var pisoGeometry = new THREE.BoxGeometry(3000,0.5,2000);
+var pisoMaterial = new THREE.MeshLambertMaterial({color:0xD6F4ED});
+var piso = new THREE.Mesh(pisoGeometry,pisoMaterial);
+piso.position.y = -1;
+scene.add(piso);
+//pasillo
+var geometry01 = new THREE.BoxGeometry(40,2,300);
+var material01= new THREE.MeshLambertMaterial({
+   color:0xA62C2C, side:THREE.DoubleSide
+   });
+var mesh01=new THREE.Mesh(geometry01,material01);
+mesh01.position.set(-138,2,-190);
+scene.add(mesh01); 
+//hielo
+var geometry01 = new THREE.BoxGeometry(400,2,400);
+var material01= new THREE.MeshLambertMaterial({
+   color:0x9CC6DB, side:THREE.DoubleSide
+   });
+var mesh01=new THREE.Mesh(geometry01,material01);
+mesh01.position.set(-570,2,-350);
+scene.add(mesh01);
+     
+ //arboles entrada
+      var ar1  = new obj01 ({x:0, y:0, z:0}); 
+    scene.add(ar1); 
+    
+    ar1.position.set(60,0,-50);
+    ar1.rotation.set(0,-3,0);
+    ar1.scale.set(1.5,2.5,1.5);
+    //arboles entrada2
+      var ar2  = new obj02 ({x:0, y:0, z:0}); 
+    scene.add(ar2); 
+    
+    ar2.position.set(48,0,-70);
+    ar2.rotation.set(0,-3,0);
+    ar2.scale.set(1.5,2.5,1.5);
+//arboles entrada3
+      var ar3  = new obj03 ({x:0, y:0, z:0}); 
+    scene.add(ar3); 
+    
+    ar3.position.set(78,0,-70);
+    ar3.rotation.set(0,-3,0);
+    ar3.scale.set(1.5,2.5,1.5);
+//entrada
+       var pr  = new obj04 ({x:0, y:0, z:0}); 
+    scene.add(pr); 
+    
+    pr.position.set(-165,0,-50);
+    pr.rotation.set(0,0,0);
+    pr.scale.set(3.5,3.5,3.5);
+
+    // muñeconieve2
+    var nv  = new obj06 ({x:0, y:0, z:0}); 
+    scene.add(nv); 
+    
+    nv.position.set(-70,2,-110);
+    nv.scale.set(3,3,3);
+// muñeconieve1
+    var nv1  = new obj06 ({x:0, y:0, z:0}); 
+    scene.add(nv1); 
+    
+    nv1.position.set(-210,2,-110);
+    nv1.scale.set(3,3,3);
+
+    //arboles
+    var ar  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar); 
+    
+    ar.position.set(-190,-3,-150);
+    ar.scale.set(2.5,2.5,2.5);
+
+    //arbol2
+    var ar2  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar2); 
+      
+    ar2.position.set(-100,0,-150);
+    ar2.scale.set(2.5,2.5,2.5);
+
+    //arbol3
+    var ar2  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar2); 
+      
+    ar2.position.set(-100,0,-200);
+    ar2.scale.set(2.5,2.5,2.5);
+    //arbol4
+    var ar2  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar2); 
+      
+    ar2.position.set(-100,0,-250);
+    ar2.scale.set(2.5,2.5,2.5);
+    //arbol5
+    var ar2  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar2); 
+      
+    ar2.position.set(-100,0,-300);
+    ar2.scale.set(2.5,2.5,2.5);
+    //arbol6
+    var ar  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar); 
+    
+    ar.position.set(-190,-3,-200);
+    ar.scale.set(2.5,2.5,2.5);
+
+    //7
+    var ar  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar); 
+    
+    ar.position.set(-190,-3,-250);
+    ar.scale.set(2.5,2.5,2.5);
+    //8
+    var ar  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar); 
+    
+    ar.position.set(-190,-3,-250);
+    ar.scale.set(2.5,2.5,2.5);
+    //9
+    var ar  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar); 
+    
+    ar.position.set(-190,-3,-300);
+    ar.scale.set(2.5,2.5,2.5);
+      //10
+    var ar  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar); 
+    
+    ar.position.set(-190,-3,-350);
+    ar.scale.set(2.5,2.5,2.5);
+    //11
+    var ar  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar); 
+    
+    ar.position.set(-190,-3,-400);
+    ar.scale.set(2.5,2.5,2.5);
+    //12
+    var ar  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar); 
+    
+    ar.position.set(-190,-3,-450);
+    ar.scale.set(2.5,2.5,2.5);
+    //13
+    var ar  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar); 
+    
+    ar.position.set(-190,-3,-500);
+    ar.scale.set(2.5,2.5,2.5);
+    //14
+    var ar  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar); 
+    
+    ar.position.set(-190,-3,-550);
+    ar.scale.set(2.5,2.5,2.5);
+    //15
+    var ar  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar); 
+    
+    ar.position.set(-190,-3,-600);
+    ar.scale.set(2.5,2.5,2.5);
+
+    //16
+    var ar2  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar2); 
+      
+    ar2.position.set(-100,0,-350);
+    ar2.scale.set(2.5,2.5,2.5);
+    //17
+    var ar2  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar2); 
+      
+    ar2.position.set(-100,0,-400);
+    ar2.scale.set(2.5,2.5,2.5);
+    //15
+    var ar2  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar2); 
+      
+    ar2.position.set(-100,0,-450);
+    ar2.scale.set(2.5,2.5,2.5);
+   
+    
+    
+    // muñeconieve
+var nv  = new obj06 ({x:0, y:0, z:0}); 
+    scene.add(nv); 
+    
+    nv.position.set(-138,2,-450);
+    nv.scale.set(3,3,3);
+     
+    //esfera
+ var es = new obj08 ({x:0, y:0, z:0}); 
+    scene.add(es); 
+    
+    es.position.set(-200,3,-540);
+    es.rotation.set(0,0,0)
+    es.scale.set(4,4,4);
+
+ //casa1
+    var cs0 = new obj09 ({x:0, y:0, z:0}); 
+    scene.add(cs0); 
+    
+    cs0.position.set(-100,20,-700);
+    cs0.rotation.set(0,0,0)
+    cs0.scale.set(.6,.6,.6); 
+
+ //casa2   
+var cs2 = new obj09 ({x:0, y:0, z:0}); 
+    scene.add(cs2); 
+    
+    cs2.position.set(-350,20,-700);
+    cs2.rotation.set(0,0,0)
+    cs2.scale.set(.6,.6,.6);
+
+//casa3 
+var cs3 = new obj09 ({x:0, y:0, z:0}); 
+    scene.add(cs3); 
+    
+    cs3.position.set(-450,20,-700);
+    cs3.rotation.set(0,0,0)
+    cs3.scale.set(.6,.6,.6);
+    //casa4 
+var cs4 = new obj09 ({x:0, y:0, z:0}); 
+    scene.add(cs4); 
+    
+    cs4.position.set(-550,20,-700);
+    cs4.rotation.set(0,0,0)
+    cs4.scale.set(.6,.6,.6);
+    //casa5 
+var cs5 = new obj09 ({x:0, y:0, z:0}); 
+    scene.add(cs5); 
+    
+    cs5.position.set(-650,20,-700);
+    cs5.rotation.set(0,0,0)
+    cs5.scale.set(.6,.6,.6);
+    //casa6 
+var cs6 = new obj09 ({x:0, y:0, z:0}); 
+    scene.add(cs6); 
+    
+    cs6.position.set(-750,20,-700);
+    cs6.rotation.set(0,0,0)
+    cs6.scale.set(.6,.6,.6);
+    //casa7 
+var cs7 = new obj09 ({x:0, y:0, z:0}); 
+    scene.add(cs7); 
+    
+    cs7.position.set(-850,20,-700);
+    cs7.rotation.set(0,0,0)
+    cs7.scale.set(.6,.6,.6);
+
+    //casa1fila1
+    var cs8 = new obj07 ({x:0, y:0, z:0}); 
+    scene.add(cs8); 
+    
+    cs8.position.set(-290,2,-450);
+    cs8.rotation.set(0,3.14,0)
+    cs8.scale.set(1,1,1);
+    //2
+    var cs9 = new obj07 ({x:0, y:0, z:0}); 
+    scene.add(cs9); 
+    
+    cs9.position.set(-290,2,-350);
+    cs9.rotation.set(0,3.14,0)
+    cs9.scale.set(1,1,1);
+//3
+    var cs01 = new obj07 ({x:0, y:0, z:0}); 
+    scene.add(cs01); 
+    
+    cs01.position.set(-290,2,-250);
+    cs01.rotation.set(0,3.14,0)
+    cs01.scale.set(1,1,1);
+
+  //4
+    var cs02 = new obj07 ({x:0, y:0, z:0}); 
+    scene.add(cs02); 
+    
+    cs02.position.set(-290,2,-150);
+    cs02.rotation.set(0,3.14,0)
+    cs02.scale.set(1,1,1);  
+
+    //2-1
+    var cs03 = new obj07 ({x:0, y:0, z:0}); 
+    scene.add(cs03); 
+    
+    cs03.position.set(-850,2,-450);
+    cs03.rotation.set(0,0,0)
+    cs03.scale.set(1,1,1);
+    //2-2
+    var cs04 = new obj07 ({x:0, y:0, z:0}); 
+    scene.add(cs04); 
+    
+    cs04.position.set(-850,2,-350);
+    cs04.rotation.set(0,0,0)
+    cs04.scale.set(1,1,1);
+      //2-3
+    var cs05 = new obj07 ({x:0, y:0, z:0}); 
+    scene.add(cs05); 
+    
+    cs05.position.set(-850,2,-250);
+    cs05.rotation.set(0,0,0)
+    cs05.scale.set(1,1,1);
+      //2-4
+    var cs06 = new obj07 ({x:0, y:0, z:0}); 
+    scene.add(cs06); 
+    
+    cs06.position.set(-850,2,-150);
+    cs06.rotation.set(0,0,0)
+    cs06.scale.set(1,1,1);
+
+//arbol grande
+    var ar5  = new obj05 ({x:0, y:0, z:0}); 
+    scene.add(ar5); 
+    
+    ar5.position.set(-570,-3,-350);
+    ar5.scale.set(10,10,10);
+ //Estrella
+    var pl01= new THREE.PointLight(0xFF9013,2,20,0.0);
+pl01.position.set(-570,170,-350);
+scene.add(pl01);
+// muñeconieve4
+    var nv4  = new obj06 ({x:0, y:0, z:0}); 
+    scene.add(nv4); 
+    
+    nv4.position.set(-200,2,-650);
+    nv4.rotation.set(0,0,0);
+    nv4.scale.set(3,3,3);
+
+
+    //interacciones
+//arboles
+ ar1.addEventListener('mouseover', (event) => {  
+          document.body.style.cursor = 'pointer';
+          event.target.scale.set(2.5,3.5,2.5);
+        });
+        ar1.addEventListener('mouseout', (event) => { 
+           document.body.style.cursor = 'default';
+           event.target.scale.set(1.5, 2.5, 1.5);
+        });
+
+        ar1.addEventListener('click', (event) => {
+          var coords = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
+          event.target.scale.set(3, 3, 3);
+          new TWEEN.Tween(coords) 
+          .to({x:-145, y: 20, z: 50})
+          .onUpdate(() => camera.position.set(coords.x,coords.y,coords.z ))
+          .start();
+        });
+            interactionManager.add(ar1);
+//entrada
+ pr.addEventListener('mouseover', (event) => {  
+          document.body.style.cursor = 'pointer';
+          event.target.scale.set(4.5,4.5,4.5);
+        });
+        pr.addEventListener('mouseout', (event) => { 
+           document.body.style.cursor = 'default';
+           event.target.scale.set(3.5, 3.5, 3.5);
+        });
+
+        pr.addEventListener('click', (event) => {
+          var coords = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
+          event.target.scale.set(3, 3, 3);
+          new TWEEN.Tween(coords) 
+          .to({x:-147, y: 20, z: 60})  
+          .onUpdate(() => camera.position.set(coords.x,coords.y,coords.z ))
+          .start();
+        });
+            interactionManager.add(pr);
+         
+  //muñeco de nieve
+nv.addEventListener('mouseover', (event) => {  
+          document.body.style.cursor = 'pointer';
+          event.target.scale.set(6.5,6.5,6.5);
+        });
+        nv.addEventListener('mouseout', (event) => { 
+           document.body.style.cursor = 'default';
+           event.target.scale.set(5,5,5);
+        });
+
+        nv.addEventListener('click', (event) => {
+          var coords = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
+          event.target.scale.set(3, 3, 3);
+          new TWEEN.Tween(coords) 
+          .to({x:-100, y: 20, z: -500})  
+          .onUpdate(() => camera.position.set(coords.x,coords.y,coords.z ))
+          .start();
+        });
+            interactionManager.add(nv);       
+           
+            //casa1
+cs0.addEventListener('mouseover', (event) => {  
+          document.body.style.cursor = 'pointer';
+          event.target.scale.set(1.3,1.3,1.3);
+        });
+        cs0.addEventListener('mouseout', (event) => { 
+           document.body.style.cursor = 'default';
+           event.target.scale.set(0.6,0.6,0.6);
+        });
+
+        cs0.addEventListener('click', (event) => {
+          var coords = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
+          event.target.scale.set(0.6,0.6,0.6);
+          new TWEEN.Tween(coords) 
+          .to({x:-350, y: 20, z: -500})      
+          .onUpdate(() => camera.position.set(coords.x,coords.y,coords.z ))
+          .start();
+        });
+            interactionManager.add(cs0);
+            //casa2
+cs2.addEventListener('mouseover', (event) => {  
+          document.body.style.cursor = 'pointer';
+          event.target.scale.set(1.3,1.3,1.3);
+        });
+        cs2.addEventListener('mouseout', (event) => { 
+           document.body.style.cursor = 'default';
+           event.target.scale.set(0.6,0.6,0.6);
+        });
+
+        cs2.addEventListener('click', (event) => {
+          var coords = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
+          event.target.scale.set(0.6,0.6,0.6);
+          new TWEEN.Tween(coords) 
+          .to({x:-550, y: 20, z: -500})     
+          .onUpdate(() => camera.position.set(coords.x,coords.y,coords.z ))
+          .start();
+        });
+            interactionManager.add(cs2);
+ 
+ //casa3
+cs4.addEventListener('mouseover', (event) => {  
+          document.body.style.cursor = 'pointer';
+          event.target.scale.set(1.3,1.3,1.3);
+        });
+        cs4.addEventListener('mouseout', (event) => { 
+           document.body.style.cursor = 'default';
+           event.target.scale.set(0.6,0.6,0.6);
+        });
+
+        cs4.addEventListener('click', (event) => {
+          var coords = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
+          event.target.scale.set(0.6,0.6,0.6);
+          new TWEEN.Tween(coords) 
+          .to({x:-750, y: 20, z: -500})     
+          .onUpdate(() => camera.position.set(coords.x,coords.y,coords.z ))
+          .start();
+        });
+            interactionManager.add(cs4);
+
+ //casa4
+cs6.addEventListener('mouseover', (event) => {  
+          document.body.style.cursor = 'pointer';
+          event.target.scale.set(1.3,1.3,1.3);
+        });
+        cs6.addEventListener('mouseout', (event) => { 
+           document.body.style.cursor = 'default';
+           event.target.scale.set(0.6,0.6,0.6);
+        });
+
+        cs6.addEventListener('click', (event) => {
+          var coords = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
+          event.target.scale.set(0.6,0.6,0.6);
+          new TWEEN.Tween(coords) 
+          .to({x:-570, y: 20, z: 6}) 
+          .onUpdate(() => camera.position.set(coords.x,coords.y,coords.z ))
+          .start();
+        });
+            interactionManager.add(cs6);
+
+//arbol
+ar5.addEventListener('mouseover', (event) => {  
+          document.body.style.cursor = 'pointer';
+          event.target.scale.set(12,12,12);
+        });
+        ar5.addEventListener('mouseout', (event) => { 
+           document.body.style.cursor = 'default';
+           event.target.scale.set(10,10,10);
+        });
+
+        ar5.addEventListener('click', (event) => {
+          var coords = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
+          event.target.scale.set(10,10,10);
+          new TWEEN.Tween(coords) 
+          .to({x:100, y: 80, z: 100}) 
+          .onUpdate(() => camera.position.set(coords.x,coords.y,coords.z ))
+          .start();
+        });
+            interactionManager.add(ar5);
+
+
+
+
+
+
+
+            //GUIA
+            var g1 = new THREE.BoxGeometry(.0075, .05, .075);
+        var m1 = new THREE.MeshNormalMaterial({ side:THREE.DoubleSide});
+        var meshx = new THREE.Mesh(g1,m1);
+        meshx.position.set(0,0,-1);
+
+        var g2 = new THREE.BoxGeometry(.05, .0075, .075);
+        var m1 = new THREE.MeshNormalMaterial({ side:THREE.DoubleSide});
+        var meshy = new THREE.Mesh(g2,meshy);
+        meshy.position.set(0,0,-.1);
+        scene.add( camera );
+        camera.add( meshx, meshy );
+
+//🎰🎰Rendering y animación
+   requestAnimationFrame(render);
+      function render() {
+
+        TWEEN.update()
+
+        interactionManager.update();
+
+    //🪄🪄 Animación - 
+
+    //🎮🎮Actualización del OrbitControls para generar la suavidad de movimiento
+    //controls.update();
+
+    //Llamado para renderizar y volver a llamar a la misma función (render)
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+    }
+</script>
+</body>
+</html>
